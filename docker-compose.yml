@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   app:
@@ -11,6 +10,8 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
       - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - .:/app
     depends_on:
       - db
       - redis
@@ -43,6 +44,40 @@ services:
     depends_on:
       - app
 
+  tests:
+    build:
+      context: .
+      target: test
+    container_name: fastapi_tests
+    volumes:
+      - .:/app
+    depends_on:
+      - app
+      - db
+      - redis
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.1
+    container_name: kibana
+    ports:
+       - "5601:5601"
+    environment:
+       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+       - elasticsearch
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
 volumes:
   postgres_data:
-  
+  es_data:

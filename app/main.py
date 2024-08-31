@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from .config import settings
 from .routers import example
 
 app = FastAPI()
+
 
 @app.get("/")
 def read_root():

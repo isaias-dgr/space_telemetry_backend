@@ -3,3 +3,6 @@ uvicorn
 pydantic
 python-dotenv
 pydantic_settings
+pytest
+pytest-mock
+httpx
