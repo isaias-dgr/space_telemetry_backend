@@ -78,6 +78,28 @@ services:
     volumes:
       - es_data:/usr/share/elasticsearch/data
 
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    environment:
+      - SERVICES=lambda,events
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_DEFAULT_REGION=us-east-1
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  lambda:
+    build:
+      context: .
+      target: development-lambda
+    environment:
+      - DOCKER_LAMBDA_STAY_OPEN=1  
+    ports:
+      - "9001:9001"
+
 volumes:
   postgres_data:
   es_data:

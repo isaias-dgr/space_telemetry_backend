@@ -1,8 +1,8 @@
 from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk
+# from elasticsearch.helpers import bulk
 from typing import Dict, Any
 from uuid import UUID
-from app.ports.telemetry import TelemetryStoreService
+from app.ports.telemetry_storage import TelemetryStoreService
 
 
 class TelemetryStore(TelemetryStoreService):

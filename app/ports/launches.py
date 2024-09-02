@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
+from app.domain.launches import Launch
+
 
 class LaunchRepository(ABC):
     @abstractmethod

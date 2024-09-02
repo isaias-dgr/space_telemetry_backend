@@ -1,4 +1,5 @@
 COMPOSE_FILE=docker-compose.yml
+AWS_COMMAND=aws --profile localstack-profile --endpoint-url=http://localhost:4566
 
 .PHONY: up down restart logs logs-app logs-db logs-redis logs-swagger ps clean
 
