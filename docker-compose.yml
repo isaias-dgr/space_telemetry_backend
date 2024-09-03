@@ -91,14 +91,19 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
 
-  lambda:
+  lambda_runtime:
     build:
       context: .
-      target: development-lambda
+      target: lambda_runtime
+    container_name: lambda_runtime
     environment:
-      - DOCKER_LAMBDA_STAY_OPEN=1  
-    ports:
-      - "9001:9001"
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
 
 volumes:
   postgres_data:

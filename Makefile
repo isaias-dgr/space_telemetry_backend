@@ -4,7 +4,7 @@ AWS_COMMAND=aws --profile localstack-profile --endpoint-url=http://localhost:456
 .PHONY: up down restart logs logs-app logs-db logs-redis logs-swagger ps clean
 
 up:
-	@docker-compose -f $(COMPOSE_FILE) up --build -d
+	@docker-compose -f $(COMPOSE_FILE) up --build app -d
 
 down:
 	@docker-compose -f $(COMPOSE_FILE) down
@@ -37,3 +37,7 @@ clean:
 
 test:
 	@docker-compose -f $(COMPOSE_FILE) run --rm tests
+	lambda-runtime:
+
+lambda:
+	@docker-compose -f $(COMPOSE_FILE) up --build lambda_runtime

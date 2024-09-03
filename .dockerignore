@@ -1,0 +1,37 @@
+# Ignorar archivos de control de versiones
+.git
+.gitignore
+
+# Ignorar archivos de configuración específicos del entorno
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Ignorar archivos de cache y configuraciones de editores
+*.pyc
+//
+*.swp
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignorar dependencias locales
+node_modules/
+build/
+dist/
+
+# Ignorar el archivo ZIP de salida para evitar incluirlo accidentalmente
+lambda_package.zip
+
+# Ignorar Dockerfile
+Dockerfile*
+.DS_Store
+*/.DS_Store
+*/.ipynb_checkpoints
+*/.pytest_cache
+*/.mypy_cache
+*/.vscode
+.pytest_cache
+__pycache__/
