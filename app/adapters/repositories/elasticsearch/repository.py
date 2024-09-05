@@ -5,8 +5,7 @@ from typing import Dict, Any, List
 from app.ports.telemetry_storage import TelemetryStoreService
 
 
-class TelemetryStore(TelemetryStoreService):
-
+class ElasticStore:
     def __init__(self, host: str, port: int):
         url = f"{host}:{port}"
         self.client = Elasticsearch([url])

@@ -1,6 +1,6 @@
-fastapi
-uvicorn
-pydantic
-pydantic-settings
 httpx
+uvicorn
+fastapi
+httpx
+elasticsearch
 psycopg2-binary

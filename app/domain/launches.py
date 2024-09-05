@@ -1,86 +1,92 @@
-from pydantic import BaseModel, Field
+from dataclasses import asdict, dataclass
 from typing import List, Optional
 
 
-class Failure(BaseModel):
-    time: Optional[int]
-    altitude: Optional[int]
-    reason: Optional[str]
+@dataclass
+class Patch:
+    small: Optional[str]
+    large: Optional[str]
 
 
-class Fairings(BaseModel):
-    reused: Optional[bool] = None
-    recovery_attempt: Optional[bool] = None
-    recovered: Optional[bool] = None
-    ships: Optional[List[str]] = None
+@dataclass
+class Reddit:
+    campaign: Optional[str]
+    launch: Optional[str]
+    media: Optional[str]
+    recovery: Optional[str]
 
 
-class Core(BaseModel):
-    core: Optional[str] = None
-    flight: Optional[int] = None
-    gridfins: Optional[bool] = None
-    legs: Optional[bool] = None
-    reused: Optional[bool] = None
-    landing_attempt: Optional[bool] = None
-    landing_success: Optional[bool] = None
-    landing_type: Optional[str] = None
-    landpad: Optional[str] = None
+@dataclass
+class Flickr:
+    small: List[str]
+    original: List[str]
 
 
-class Patch(BaseModel):
-    small: Optional[str] = None
-    large: Optional[str] = None
+@dataclass
+class Links:
+    patch: Patch
+    reddit: Reddit
+    flickr: Flickr
+    presskit: Optional[str]
+    webcast: Optional[str]
+    youtube_id: Optional[str]
+    article: Optional[str]
+    wikipedia: Optional[str]
 
 
-class Reddit(BaseModel):
-    campaign: Optional[str] = None
-    launch: Optional[str] = None
-    media: Optional[str] = None
-    recovery: Optional[str] = None
+@dataclass
+class Fairings:
+    reused: Optional[bool]
+    recovery_attempt: Optional[bool]
+    recovered: Optional[bool]
+    ships: List[str]
 
 
-class Flickr(BaseModel):
-    small: Optional[List[str]] = None
-    original: Optional[List[str]] = None
+@dataclass
+class Core:
+    core: Optional[str]
+    flight: Optional[int]
+    gridfins: Optional[bool]
+    legs: Optional[bool]
+    reused: Optional[bool]
+    landing_attempt: Optional[bool]
+    landing_success: Optional[bool]
+    landing_type: Optional[str]
+    landpad: Optional[str]
 
 
-class Links(BaseModel):
-    patch: Optional[Patch] = None
-    reddit: Optional[Reddit] = None
-    flickr: Optional[Flickr] = None
-    presskit: Optional[str] = None
-    webcast: Optional[str] = None
-    youtube_id: Optional[str] = None
-    article: Optional[str] = None
-    wikipedia: Optional[str] = None
-
-
-class Launch(BaseModel):
+@dataclass
+class Launch:
+    fairings: Fairings
+    links: Links
+    static_fire_date_utc: Optional[str]
+    static_fire_date_unix: Optional[int]
+    net: bool
+    window: Optional[int]
+    rocket: str
+    success: Optional[bool]
+    failures: List[str]
+    details: Optional[str]
+    crew: List[str]
+    ships: List[str]
+    capsules: List[str]
+    payloads: List[str]
+    launchpad: str
     flight_number: int
     name: str
     date_utc: str
     date_unix: int
     date_local: str
-    date_precision: str = Field(..., pattern="^(half|quarter|year|month|day|hour)$")
-    static_fire_date_utc: Optional[str] = None
-    static_fire_date_unix: Optional[int] = None
-    tdb: bool = False
-    net: bool = False
-    window: Optional[int] = None
-    rocket: Optional[str] = None
-    success: Optional[bool] = None
-    failures: Optional[List[Failure]] = None
+    date_precision: str
     upcoming: bool
-    details: Optional[str] = None
-    fairings: Optional[Fairings] = None
-    crew: Optional[List[str]] = None
-    ships: Optional[List[str]] = None
-    capsules: Optional[List[str]] = None
-    payloads: Optional[List[str]] = None
-    launchpad: Optional[str] = None
-    cores: Optional[List[Core]] = None
-    links: Optional[Links] = None
-    auto_update: bool = True
+    cores: List[Core]
+    auto_update: bool
+    tbd: bool
+    launch_library_id: Optional[str]
+    id: str
+
+    def asdict(self):
+        return asdict(self)
 
 
 Launches = List[Launch]

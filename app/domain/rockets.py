@@ -1,103 +1,113 @@
-from pydantic import BaseModel
+from dataclasses import dataclass
 from typing import List, Optional
 
 
-class Height(BaseModel):
-    meters: Optional[float]
-    feet: Optional[float]
+@dataclass
+class Height:
+    meters: Optional[float] = None
+    feet: Optional[float] = None
 
 
-class Diameter(BaseModel):
-    meters: Optional[float]
-    feet: Optional[float]
+@dataclass
+class Diameter:
+    meters: Optional[float] = None
+    feet: Optional[float] = None
 
 
-class Mass(BaseModel):
-    kg: Optional[float]
-    lb: Optional[float]
+@dataclass
+class Mass:
+    kg: Optional[float] = None
+    lb: Optional[float] = None
 
 
-class Thrust(BaseModel):
-    kN: Optional[float]
-    lbf: Optional[float]
+@dataclass
+class Thrust:
+    kN: Optional[float] = None
+    lbf: Optional[float] = None
 
 
-class FirstStage(BaseModel):
-    reusable: Optional[bool]
-    engines: Optional[int]
-    fuel_amount_tons: Optional[float]
-    burn_time_sec: Optional[float]
-    thrust_sea_level: Optional[Thrust]
-    thrust_vacuum: Optional[Thrust]
+@dataclass
+class FirstStage:
+    reusable: Optional[bool] = None
+    engines: Optional[int] = None
+    fuel_amount_tons: Optional[float] = None
+    burn_time_sec: Optional[float] = None
+    thrust_sea_level: Optional[Thrust] = None
+    thrust_vacuum: Optional[Thrust] = None
 
 
-class CompositeFairing(BaseModel):
-    height: Optional[Height]
-    diameter: Optional[Diameter]
+@dataclass
+class CompositeFairing:
+    height: Optional[Height] = None
+    diameter: Optional[Diameter] = None
 
 
-class Payloads(BaseModel):
-    option_1: Optional[str]
-    composite_fairing: Optional[CompositeFairing]
+@dataclass
+class Payloads:
+    option_1: Optional[str] = None
+    composite_fairing: Optional[CompositeFairing] = None
 
 
-class SecondStage(BaseModel):
-    reusable: Optional[bool]
-    engines: Optional[int]
-    fuel_amount_tons: Optional[float]
-    burn_time_sec: Optional[float]
-    thrust: Optional[Thrust]
-    payloads: Optional[Payloads]
+@dataclass
+class SecondStage:
+    reusable: Optional[bool] = None
+    engines: Optional[int] = None
+    fuel_amount_tons: Optional[float] = None
+    burn_time_sec: Optional[float] = None
+    thrust: Optional[Thrust] = None
+    payloads: Optional[Payloads] = None
 
 
-class ISP(BaseModel):
-    sea_level: Optional[float]
-    vacuum: Optional[float]
+@dataclass
+class ISP:
+    sea_level: Optional[float] = None
+    vacuum: Optional[float] = None
 
 
-class Engine(BaseModel):
-    number: Optional[int]
-    type: Optional[str]
-    version: Optional[str]
-    layout: Optional[str]
-    isp: Optional[ISP]
-    engine_loss_max: Optional[float]
-    propellant_1: Optional[str]
-    propellant_2: Optional[str]
-    thrust_sea_level: Optional[Thrust]
-    thrust_vacuum: Optional[Thrust]
-    thrust_to_weight: Optional[float]
+@dataclass
+class Engine:
+    number: Optional[int] = None
+    type: Optional[str] = None
+    version: Optional[str] = None
+    layout: Optional[str] = None
+    isp: Optional[ISP] = None
+    engine_loss_max: Optional[float] = None
+    propellant_1: Optional[str] = None
+    propellant_2: Optional[str] = None
+    thrust_sea_level: Optional[Thrust] = None
+    thrust_vacuum: Optional[Thrust] = None
+    thrust_to_weight: Optional[float] = None
 
 
-class LandingLeg(BaseModel):
-    number: Optional[int]
-    material: Optional[str]
+@dataclass
+class LandingLeg:
+    number: Optional[int] = None
+    material: Optional[str] = None
 
 
-class Rocket(BaseModel):
-    name: Optional[str]
-    type: Optional[str]
-    active: Optional[bool]
-    stages: Optional[int]
-    boosters: Optional[int]
-    cost_per_launch: Optional[float]
-    success_rate_pct: Optional[float]
-    first_flight: Optional[str]
-    country: Optional[str]
-    company: Optional[str]
-    height: Optional[Height]
-    diameter: Optional[Diameter]
-    mass: Optional[Mass]
-    payload_weights: Optional[
-        List[dict]
-    ]  # Assuming payload_weights is a list of dictionaries
-    first_stage: Optional[FirstStage]
-    second_stage: Optional[SecondStage]
-    engines: Optional[Engine]
-    landing_legs: Optional[LandingLeg]
-    flickr_images: Optional[List[str]]
-    wikipedia: Optional[str]
-    description: Optional[str]
+@dataclass
+class Rocket:
+    name: Optional[str] = None
+    type: Optional[str] = None
+    active: Optional[bool] = None
+    stages: Optional[int] = None
+    boosters: Optional[int] = None
+    cost_per_launch: Optional[float] = None
+    success_rate_pct: Optional[float] = None
+    first_flight: Optional[str] = None
+    country: Optional[str] = None
+    company: Optional[str] = None
+    height: Optional[Height] = None
+    diameter: Optional[Diameter] = None
+    mass: Optional[Mass] = None
+    payload_weights: Optional[List[dict]] = None
+    first_stage: Optional[FirstStage] = None
+    second_stage: Optional[SecondStage] = None
+    engines: Optional[Engine] = None
+    landing_legs: Optional[LandingLeg] = None
+    flickr_images: Optional[List[str]] = None
+    wikipedia: Optional[str] = None
+    description: Optional[str] = None
 
 
 Rockets = List[Rocket]

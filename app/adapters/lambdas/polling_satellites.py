@@ -1,18 +1,19 @@
 import logging
-from app.usescase.polling_telemetry import PollingTelemetry
+from app.usescase.polling_satellite import PollingSatellite
 from app.adapters.services.spacex import SpaceXService
 from app.adapters.repositories.elasticsearch.telemetry_repository import (
-    TelemetryStore,
+    SatelliteStore,
 )
+
 
 def lambda_handler(event, context):
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
     )
     space_service = SpaceXService("https://api.spacexdata.com")
-    telemetry_store = TelemetryStore("http://elasticsearch", "9200")
+    telemetry_store = SatelliteStore("http://elasticsearch", "9200")
 
-    p = PollingTelemetry(space_service, telemetry_store)
+    p = PollingSatellite(space_service, telemetry_store)
     total = p.get_and_save_launches()
 
     return {

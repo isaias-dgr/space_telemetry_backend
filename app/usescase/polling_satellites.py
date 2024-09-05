@@ -1,13 +1,13 @@
 # from app.domain.rockets import Rocket
 # from app.domain.satellite import Satellite
 from app.ports.space_service import SpaceXService
-from app.ports.telemetry_storage import TelemetryStoreService
+from app.ports.telemetry_storage import SatelliteStoreService
 
 
-class PollingTelemetry:
+class SatellitesTelemetry:
 
     def __init__(
-        self, space_service: SpaceXService, telemetry_store: TelemetryStoreService
+        self, space_service: SpaceXService, telemetry_store: SatelliteStoreService
     ):
         self.space_service = space_service
         self.telemetry_store = telemetry_store

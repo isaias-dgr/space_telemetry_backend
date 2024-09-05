@@ -3,7 +3,7 @@ from typing import Dict, Any, List
 from uuid import UUID
 
 
-class TelemetryStoreService(ABC):
+class SatelliteStoreService(ABC):
     @abstractmethod
     def add(self, index: str, document: Dict[str, Any]) -> None:
         pass
