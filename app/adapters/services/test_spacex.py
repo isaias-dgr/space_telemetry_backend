@@ -20,8 +20,8 @@ def test_get_rockets():
     assert isinstance(result[0], Rocket)
 
 
-def test_get_starlink():
+def test_get_satellites():
     service = SpaceXService("https://api.spacexdata.com")
-    result = service.get_starlink()
+    result = service.get_satellites()
     assert isinstance(result, list)
     assert isinstance(result[0], Satellite)

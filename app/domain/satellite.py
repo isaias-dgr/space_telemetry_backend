@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from typing import List, Optional
 
 
@@ -58,5 +58,12 @@ class Satellite:
     velocity_kms: Optional[float] = None
     id: str = ""
 
+    def to_dict(self):
+        return asdict(self)
+
 
 Satellites = List[Satellite]
+
+
+def to_dict(satellites: Satellites):
+    return [satellite.to_dict() for satellite in satellites]

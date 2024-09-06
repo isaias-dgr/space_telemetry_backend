@@ -2,7 +2,6 @@ from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 from uuid import UUID
 from typing import Dict, Any, List
-from app.ports.telemetry_storage import TelemetryStoreService
 
 
 class ElasticStore:

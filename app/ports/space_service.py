@@ -16,5 +16,5 @@ class SpaceXService(ABC):
         pass
 
     @abstractmethod
-    def get_starlink(self) -> List[Satellite]:
+    def get_satellites(self) -> List[Satellite]:
         pass

@@ -2,7 +2,7 @@ from typing import List, Optional
 from app.domain.rockets import Rocket
 import psycopg2
 from psycopg2.extras import DictCursor
-from app.ports.rockets import RocketRepository
+from app.ports.rockets_storage import RocketRepository
 
 
 class RocketRepository(RocketRepository):

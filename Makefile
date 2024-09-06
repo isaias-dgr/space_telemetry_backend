@@ -40,25 +40,35 @@ test:
 	@docker-compose -f $(COMPOSE_FILE) run --rm tests
 	lambda-runtime:
 
+APP = "launches"
+
 create-package:
-	@echo "Creating package zip"
+	@echo "Creating $(APP) package zip"
 	@pip install -qr requirements.txt -t ./package
 	@cd package && zip -rq9 ${CURRENT_DIR}/function.zip .
 	@cd ${CURRENT_DIR} && zip -gqr function.zip app/
 
 create-lambda: create-package
-	@echo "Creating lambda function"
+	@echo "Creating lambda $(APP) function"
 	@$(AWS_COMMAND) lambda create-function \
-		--function-name polling_lambda \
+		--function-name polling_$(APP)_lambda \
 		--runtime python3.12 \
-		--handler app.adapters.lambdas.polling_launches.lambda_handler \
+		--handler app.adapters.lambdas.polling_$(APP).lambda_handler \
 		--zip-file fileb://function.zip \
 		--role arn:aws:iam::123456789012:role/lambda-role 
 	@rm -rf package function.zip
 
-invoke-lambda:
+update-lambda: create-package
+	@echo "Updating lambda $(APP) function"
+	@$(AWS_COMMAND) lambda update-function-code \
+		--function-name polling_$(APP)_lambda \
+		--zip-file fileb://function.zip
+	@rm -rf package function.zip
+
+update-run-lambda: update-lambda
+	@echo "Creating lambda $(APP) function"
 	@$(AWS_COMMAND) lambda invoke \
-		--function-name polling_lambda  \
+		--function-name polling_$(APP)_lambda  \
 		--log-type Tail \
 		output.json \
 		--query 'LogResult' \
@@ -66,9 +76,10 @@ invoke-lambda:
 	@jq . output.json
 	@rm output.json
 
-invoke-create-lambda: update-lambda
+run-lambda:
+	@echo "Invoke lambda $(APP) function"
 	@$(AWS_COMMAND) lambda invoke \
-		--function-name polling_lambda  \
+		--function-name polling_$(APP)_lambda  \
 		--log-type Tail \
 		output.json \
 		--query 'LogResult' \
@@ -78,11 +89,7 @@ invoke-create-lambda: update-lambda
 
 delete-lambda:
 	@$(AWS_COMMAND) lambda delete-function \
-		--function-name polling_lambda
+		--function-name polling_$(APP)_lambda
 
-update-lambda:create-package
-	@echo "Updating lambda function"
-	@$(AWS_COMMAND) lambda update-function-code \
-		--function-name polling_lambda \
-		--zip-file fileb://function.zip
-	@rm -rf package function.zip
+show-data:
+	@$(AWS_COMMAND) dynamodb scan --table-name Rockets

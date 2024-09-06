@@ -1,113 +1,141 @@
-from dataclasses import dataclass
-from typing import List, Optional
+from dataclasses import dataclass, asdict, fields
+from decimal import Decimal
+from typing import Any, List, Optional, Type, TypeVar
+
+T = TypeVar("T")
 
 
 @dataclass
-class Height:
-    meters: Optional[float] = None
-    feet: Optional[float] = None
-
-
-@dataclass
-class Diameter:
-    meters: Optional[float] = None
-    feet: Optional[float] = None
+class Dimension:
+    meters: Optional[Decimal]
+    feet: Optional[Decimal]
 
 
 @dataclass
 class Mass:
-    kg: Optional[float] = None
-    lb: Optional[float] = None
+    kg: Optional[Decimal]
+    lb: Optional[Decimal]
 
 
 @dataclass
 class Thrust:
-    kN: Optional[float] = None
-    lbf: Optional[float] = None
-
+    kN: Optional[Decimal]
+    lbf: Optional[Decimal]
 
 @dataclass
 class FirstStage:
-    reusable: Optional[bool] = None
-    engines: Optional[int] = None
-    fuel_amount_tons: Optional[float] = None
-    burn_time_sec: Optional[float] = None
-    thrust_sea_level: Optional[Thrust] = None
-    thrust_vacuum: Optional[Thrust] = None
-
+    thrust_sea_level: Thrust
+    thrust_vacuum: Thrust
+    reusable: Optional[bool]
+    engines: Optional[int]
+    fuel_amount_tons: Optional[Decimal]
+    burn_time_sec: Optional[int]
 
 @dataclass
 class CompositeFairing:
-    height: Optional[Height] = None
-    diameter: Optional[Diameter] = None
-
+    height: Dimension
+    diameter: Dimension
 
 @dataclass
 class Payloads:
-    option_1: Optional[str] = None
-    composite_fairing: Optional[CompositeFairing] = None
-
+    composite_fairing: CompositeFairing
+    option_1: Optional[str]
 
 @dataclass
 class SecondStage:
-    reusable: Optional[bool] = None
-    engines: Optional[int] = None
-    fuel_amount_tons: Optional[float] = None
-    burn_time_sec: Optional[float] = None
-    thrust: Optional[Thrust] = None
-    payloads: Optional[Payloads] = None
+    thrust: Thrust
+    payloads: Payloads
+    reusable: Optional[bool]
+    engines: Optional[int]
+    fuel_amount_tons: Optional[Decimal]
+    burn_time_sec: Optional[int]
 
 
 @dataclass
 class ISP:
-    sea_level: Optional[float] = None
-    vacuum: Optional[float] = None
+    sea_level: Optional[int]
+    vacuum: Optional[int]
 
 
 @dataclass
-class Engine:
-    number: Optional[int] = None
-    type: Optional[str] = None
-    version: Optional[str] = None
-    layout: Optional[str] = None
-    isp: Optional[ISP] = None
-    engine_loss_max: Optional[float] = None
-    propellant_1: Optional[str] = None
-    propellant_2: Optional[str] = None
-    thrust_sea_level: Optional[Thrust] = None
-    thrust_vacuum: Optional[Thrust] = None
-    thrust_to_weight: Optional[float] = None
+class Engines:
+    isp: ISP
+    thrust_sea_level: Thrust
+    thrust_vacuum: Thrust
+    number: Optional[int]
+    type: Optional[str]
+    version: Optional[str]
+    layout: Optional[str]
+    engine_loss_max: Optional[int]
+    propellant_1: Optional[str]
+    propellant_2: Optional[str]
+    thrust_to_weight: Optional[Decimal]
 
 
 @dataclass
-class LandingLeg:
-    number: Optional[int] = None
-    material: Optional[str] = None
+class LandingLegs:
+    number: Optional[int]
+    material: Optional[str]
+
+
+@dataclass
+class PayloadWeight:
+    id: Optional[str]
+    name: Optional[str]
+    kg: Optional[int]
+    lb: Optional[int]
 
 
 @dataclass
 class Rocket:
-    name: Optional[str] = None
-    type: Optional[str] = None
-    active: Optional[bool] = None
-    stages: Optional[int] = None
-    boosters: Optional[int] = None
-    cost_per_launch: Optional[float] = None
-    success_rate_pct: Optional[float] = None
-    first_flight: Optional[str] = None
-    country: Optional[str] = None
-    company: Optional[str] = None
-    height: Optional[Height] = None
-    diameter: Optional[Diameter] = None
-    mass: Optional[Mass] = None
-    payload_weights: Optional[List[dict]] = None
-    first_stage: Optional[FirstStage] = None
-    second_stage: Optional[SecondStage] = None
-    engines: Optional[Engine] = None
-    landing_legs: Optional[LandingLeg] = None
-    flickr_images: Optional[List[str]] = None
-    wikipedia: Optional[str] = None
-    description: Optional[str] = None
+    height: Dimension
+    diameter: Dimension
+    mass: Mass
+    first_stage: FirstStage
+    second_stage: SecondStage
+    engines: Engines
+    landing_legs: LandingLegs
+    payload_weights: List[PayloadWeight]
+    flickr_images: List[str]
+    name: Optional[str]
+    type: Optional[str]
+    active: Optional[bool]
+    stages: Optional[int]
+    boosters: Optional[int]
+    cost_per_launch: Optional[Decimal]
+    success_rate_pct: Optional[Decimal]
+    first_flight: Optional[str]
+    country: Optional[str]
+    company: Optional[str]
+    wikipedia: Optional[str]
+    description: Optional[str]
+    id: Optional[str]
+
+    def to_dict(self):
+        return asdict(self)
+
+
+def from_dict(cls: Type[T], data: dict, sep=".") -> T:
+    fieldtypes = {f.name: f.type for f in fields(cls)}
+    d = {}
+    for f in data:
+        if isinstance(data[f], dict):
+            o = from_dict(fieldtypes[f], data[f], sep + "\t")
+        else:
+            o = data[f]
+        d[f] = o
+    return cls(**d)
+
+
+def convert_floats_to_decimal(obj: Any) -> Any:
+    if isinstance(obj, list):
+        return [convert_floats_to_decimal(item) for item in obj]
+    elif isinstance(obj, dict):
+        return {k: convert_floats_to_decimal(v) for k, v in obj.items()}
+    elif isinstance(obj, float):
+        return Decimal(str(obj))  # Convertir float a Decimal
+    else:
+        return obj
 
 
 Rockets = List[Rocket]

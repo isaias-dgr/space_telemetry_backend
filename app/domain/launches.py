@@ -85,7 +85,7 @@ class Launch:
     launch_library_id: Optional[str]
     id: str
 
-    def asdict(self):
+    def to_dict(self):
         return asdict(self)
 
 

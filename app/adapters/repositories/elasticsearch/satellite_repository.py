@@ -2,18 +2,17 @@ from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 from uuid import UUID
 from typing import Dict, Any, List
+from app.ports.satellite_storage import SatelliteStoreService
 from app.adapters.repositories.elasticsearch.repository import ElasticStore
-from app.ports.telemetry_storage import TelemetryStoreService
 
 
-class TelemetryStore(
+class SatelliteStore(
     ElasticStore,
-    TelemetryStoreService,
+    SatelliteStoreService,
 ):
-
     def __init__(self, host: str, port: int):
         super().__init__(host, port)
-        self.index = "telemetry"
+        self.index = "satellites"
 
     def add(self, document: Dict[str, Any]) -> None:
         super().add(self.index, document)

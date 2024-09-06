@@ -13,29 +13,9 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - db
-      - redis
       - localstack
       - elasticsearch
       - kibana
-
-  db:
-    image: postgres:13-alpine
-    container_name: postgres_db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-  redis:
-    image: redis:alpine
-    container_name: redis_cache
-    ports:
-      - "6379:6379"
 
   swagger:
     image: swaggerapi/swagger-ui
@@ -55,9 +35,8 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - app
-      - db
-      - redis
+      - localstack
+      - elasticsearch
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.10.1
@@ -85,7 +64,7 @@ services:
     image: localstack/localstack:latest
     container_name: localstack
     environment:
-      - SERVICES=lambda,events
+      - SERVICES=lambda,events,dynamodb
       - DOCKER_HOST=unix:///var/run/docker.sock
       - AWS_DEFAULT_REGION=us-east-1
     ports:
@@ -105,8 +84,7 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - db
-      - redis
+      - localstack
 
 volumes:
   postgres_data:
