@@ -4,7 +4,7 @@ services:
     build:
       context: .
       target: development
-    container_name: fastapi_app
+    container_name: http_app
     ports:
       - "8000:8000"
     environment:

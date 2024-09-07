@@ -1,9 +1,9 @@
 import hashlib
 from typing import Generator, List
 import httpx
-
-from app.domain.launches import Launch, Launches
-from app.domain.rockets import Rocket, Rockets, from_dict
+from app.domain import from_dict
+from app.domain.launches import Launch
+from app.domain.rockets import Rocket, Rockets
 from app.domain.satellite import Satellite, Satellites
 
 
@@ -36,7 +36,7 @@ class SpaceXService:
         )
         if response.status_code == 200:
             data = response.json()
-            return [Launch(**launch) for launch in data["docs"]], data["hasNextPage"]
+            return [from_dict(Launch, launch) for launch in data["docs"]], data["hasNextPage"]
         else:
             raise Exception(
                 f"Failed to get launches. Status code: {response.status_code}"
@@ -68,7 +68,7 @@ class SpaceXService:
         )
         if response.status_code == 200:
             data = response.json()
-            return [Satellite(**sat) for sat in data["docs"]], data["hasNextPage"]
+            return [from_dict(Satellite, sat) for sat in data["docs"]], data["hasNextPage"]
         else:
             raise Exception(
                 f"Failed to get satellite. Status code: {response.status_code}"

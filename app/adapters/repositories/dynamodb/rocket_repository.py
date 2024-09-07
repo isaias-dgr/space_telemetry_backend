@@ -1,7 +1,8 @@
 import boto3
 from botocore.exceptions import ClientError
-from typing import List, Optional
-from app.domain.rockets import Rocket, convert_floats_to_decimal
+from typing import Optional
+from app.domain.rockets import Rocket
+from app.domain import convert_floats_to_decimal
 from app.ports.rockets_storage import RocketRepository
 
 

@@ -1,8 +1,6 @@
-from dataclasses import dataclass, asdict, fields
+from dataclasses import dataclass, asdict
 from decimal import Decimal
-from typing import Any, List, Optional, Type, TypeVar
-
-T = TypeVar("T")
+from typing import List, Optional
 
 
 @dataclass
@@ -113,29 +111,5 @@ class Rocket:
 
     def to_dict(self):
         return asdict(self)
-
-
-def from_dict(cls: Type[T], data: dict, sep=".") -> T:
-    fieldtypes = {f.name: f.type for f in fields(cls)}
-    d = {}
-    for f in data:
-        if isinstance(data[f], dict):
-            o = from_dict(fieldtypes[f], data[f], sep + "\t")
-        else:
-            o = data[f]
-        d[f] = o
-    return cls(**d)
-
-
-def convert_floats_to_decimal(obj: Any) -> Any:
-    if isinstance(obj, list):
-        return [convert_floats_to_decimal(item) for item in obj]
-    elif isinstance(obj, dict):
-        return {k: convert_floats_to_decimal(v) for k, v in obj.items()}
-    elif isinstance(obj, float):
-        return Decimal(str(obj))  # Convertir float a Decimal
-    else:
-        return obj
-
 
 Rockets = List[Rocket]

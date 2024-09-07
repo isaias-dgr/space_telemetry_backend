@@ -63,7 +63,3 @@ class Satellite:
 
 
 Satellites = List[Satellite]
-
-
-def to_dict(satellites: Satellites):
-    return [satellite.to_dict() for satellite in satellites]

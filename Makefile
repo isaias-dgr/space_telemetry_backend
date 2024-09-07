@@ -92,4 +92,5 @@ delete-lambda:
 		--function-name polling_$(APP)_lambda
 
 show-data:
-	@$(AWS_COMMAND) dynamodb scan --table-name Rockets
+	@$(AWS_COMMAND) dynamodb scan --table-name Rockets --select "COUNT"
+	# @$(AWS_COMMAND) dynamodb scan --table-name Rockets

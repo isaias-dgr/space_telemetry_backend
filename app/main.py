@@ -1,11 +1,7 @@
-from fastapi import FastAPI
-from .routers import example
+from app.adapters.https.flask.main import app
+from asgiref.wsgi import WsgiToAsgi
 
-app = FastAPI()
+asgi_app = WsgiToAsgi(app)
 
-
-@app.get("/")
-def read_root():
-    return {"message": "Hello, World!"}
-
-app.include_router(example.router)
+if __name__ == '__main__':
+    app.run()

@@ -1,1 +1,7 @@
 pytest
+pylint
+flake8
+mypy
+black
+autopep8
+isort
