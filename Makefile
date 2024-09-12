@@ -7,6 +7,9 @@ CURRENT_DIR := $(shell pwd)
 up:
 	@docker-compose -f $(COMPOSE_FILE) up --build app -d
 
+up-front:
+	@docker-compose -f $(COMPOSE_FILE) up --build app-front -d
+
 down:
 	@docker-compose -f $(COMPOSE_FILE) down
 

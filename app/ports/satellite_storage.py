@@ -9,13 +9,9 @@ class SatelliteStoreService(ABC):
         pass
 
     @abstractmethod
-    def delete(self, document_id: UUID) -> None:
-        pass
-
-    @abstractmethod
     def add_bulk(self, documents: List[Dict[str, Any]]) -> None:
         pass
 
     @abstractmethod
-    def update(self, document_id: UUID, document: Dict[str, Any]) -> None:
+    def get_dashboard(self) -> List[Dict[str, Any]]:
         pass

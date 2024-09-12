@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from typing import Dict, Any, List
 from uuid import UUID
 
+from app.domain.dashboard import Dashboard
+
 
 class TelemetryStoreService(ABC):
     @abstractmethod
@@ -9,13 +11,9 @@ class TelemetryStoreService(ABC):
         pass
 
     @abstractmethod
-    def delete(self, document_id: UUID) -> None:
-        pass
-
-    @abstractmethod
     def add_bulk(self, documents: List[Dict[str, Any]]) -> None:
         pass
 
     @abstractmethod
-    def update(self, document_id: UUID, document: Dict[str, Any]) -> None:
+    def get_dashboard(self) -> Dashboard:
         pass

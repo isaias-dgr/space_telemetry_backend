@@ -1,0 +1,122 @@
+openapi: 3.0.0
+info:
+  title: Dashboard API
+  description: API to provide dashboard data for rocket performance.
+  version: 1.0.0
+servers:
+  - url: http://0.0.0.0:8000
+
+paths:
+  /dashboard:
+    get:
+      summary: Get dashboard data
+      description: Returns various data on rocket performance, client distribution, and launch success.
+      responses:
+        '200':
+          description: Successful response with dashboard data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      average_thrust:
+                        type: object
+                        properties:
+                          value:
+                            type: number
+                            example: 7802.731707317073
+                      client_distribution:
+                        type: object
+                        properties:
+                          buckets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                doc_count:
+                                  type: integer
+                                  example: 134
+                                key:
+                                  type: string
+                                  example: "SpaceX"
+                      cost_comparison_by_rocket_type:
+                        type: object
+                        properties:
+                          buckets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                average_cost:
+                                  type: object
+                                  properties:
+                                    value:
+                                      type: number
+                                      example: 50000000.0
+                                doc_count:
+                                  type: integer
+                                  example: 390
+                                key:
+                                  type: string
+                                  example: "Falcon 9"
+                      cost_per_launch_avg:
+                        type: object
+                        properties:
+                          value:
+                            type: number
+                            example: 49919512.19512195
+                      engine_count_avg:
+                        type: object
+                        properties:
+                          value:
+                            type: number
+                            example: 9.24390243902439
+                      launch_orbits:
+                        type: object
+                        properties:
+                          buckets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                doc_count:
+                                  type: integer
+                                  example: 118
+                                key:
+                                  type: string
+                                  example: "VLEO"
+                      launch_success_rate:
+                        type: object
+                        properties:
+                          buckets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                doc_count:
+                                  type: integer
+                                  example: 362
+                                key_as_string:
+                                  type: string
+                                  example: "true"
+                      launches_per_year:
+                        type: object
+                        properties:
+                          buckets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                doc_count:
+                                  type: integer
+                                  example: 2
+                                key_as_string:
+                                  type: string
+                                  example: "2012-01-01T00:00:00.000Z"
+                      payload_weight_avg:
+                        type: object
+                        properties:
+​⬤

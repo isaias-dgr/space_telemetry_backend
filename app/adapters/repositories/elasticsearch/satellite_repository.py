@@ -20,8 +20,5 @@ class SatelliteStore(
     def add_bulk(self, documents: List[Dict[str, Any]]) -> None:
         super().add_bulk(self.index, documents)
 
-    def delete(self, document_id: UUID) -> None:
-        super().delete(self.index, document_id)
-
-    def update(self, document_id: UUID, document: Dict[str, Any]) -> None:
-        super().update(self.index, document_id, document)
+    def get_dashboard(self) -> List[Dict[str, Any]]:
+        raise NotImplementedError

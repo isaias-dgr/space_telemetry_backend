@@ -16,16 +16,27 @@ services:
       - localstack
       - elasticsearch
       - kibana
+      - swagger
 
+  app-front:
+    build:
+      context: .
+      target: front-development
+    container_name: front_app
+    ports:
+      - "8050:8050"
+    volumes:
+      - .:/app
+      
   swagger:
     image: swaggerapi/swagger-ui
     container_name: swagger_ui
     ports:
       - "8080:8080"
+    volumes:
+      - ./docs/openapi.yaml:/usr/share/nginx/html/openapi.yaml
     environment:
-      SWAGGER_JSON: http://app:8000/openapi.json
-    depends_on:
-      - app
+      SWAGGER_YAML: /usr/share/nginx/html/openapi.yaml
 
   tests:
     build:

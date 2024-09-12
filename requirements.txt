@@ -1,7 +1,10 @@
 httpx
 uvicorn
 asgiref
+flask
+gunicorn
 fastapi
+vizro
 httpx
 elasticsearch
 psycopg2-binary

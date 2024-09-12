@@ -16,8 +16,6 @@ class ElasticStore:
         actions = [{"_index": index, "_source": document} for document in documents]
         bulk(self.client, actions)
 
-    def delete(self, index: str, document_id: UUID) -> None:
-        self.client.delete(index=index, id=str(document_id))
-
-    def update(self, index: str, document_id: UUID, document: Dict[str, Any]) -> None:
-        self.client.update(index=index, id=str(document_id), body={"doc": document})
+    def get_query(self, index: str, query: Dict[str, Any]) -> List[Dict[str, Any]]:
+        response = self.client.search(index=index, body=query)
+        return response["aggregations"]

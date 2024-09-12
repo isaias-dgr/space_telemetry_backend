@@ -15,7 +15,18 @@ COPY requirements_dev.txt .
 RUN pip install --no-cache-dir -r requirements_dev.txt
 COPY . .
 EXPOSE 8000
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["gunicorn", "-w", "4", "--access-logfile", "-", "--error-logfile", "-", "--reload", "--bind", "0.0.0.0:8000", "app.main:app"]
+
+FROM python:3.10-alpine AS front-development
+RUN apk add --no-cache bash entr
+WORKDIR /app
+COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+COPY requirements_dev.txt .
+COPY . .
+EXPOSE 8050
+CMD ["python", "app/adapters/https/vizro/main.py"]
 
 FROM python:3.10-alpine AS production
 WORKDIR /app
